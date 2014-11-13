@@ -1,0 +1,15 @@
+html {
+    overflow:hidden;
+}
+
+#transactions {
+    /* This must be 32 * .cell width */
+    width: 960px;
+    margin: 0 auto;
+}
+
+.cell {
+    height: 30px;
+    width: 30px;
+    float : left;
+}

@@ -1,0 +1,17 @@
+html {
+    overflow:hidden;
+}
+
+#transactions {
+    text-align: center;
+}
+
+.row {
+    font-size: 28px;
+    letter-spacing: 10px;
+    height: 38px;
+}
+
+#transactions a {
+    text-decoration: none !important;
+}

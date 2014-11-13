@@ -1,0 +1,20 @@
+html {
+    overflow:hidden;
+}
+
+#transactions {
+    width: 800px;
+    margin: 0 auto;
+}
+
+.row {
+    font-size: 14pt;
+    text-align: left;
+    font-family: "Times New Roman", Times, serif;
+    font-style: italic;
+}
+
+a {
+    text-decoration: none !important;
+    color: black;
+}
