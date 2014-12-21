@@ -63,8 +63,6 @@ var GEOMETRIC_SHAPES = [
   "&#11204;" // 8, octagon
 ];
 
-
-
 var bitValues = function(hash) {
   var values = Array();
   for (var i = 0; i < hash.length; i += 2) {
@@ -100,10 +98,19 @@ var byteValues = function(hash) {
   return values;
 };
 
-var wordValues = function(hash) {
+var shortWordValues = function(hash) {
   var values = Array();
   for (var i = 0; i < hash.length; i += 4) {
     var element = parseInt(hash.substring(i, i + 4), 16);
+    values.push(element);
+  }
+  return values;
+};
+
+var longWordValues = function(hash) {
+  var values = Array();
+  for (var i = 0; i < hash.length; i += 8) {
+    var element = parseInt(hash.substring(i, i + 8), 16);
     values.push(element);
   }
   return values;
@@ -223,12 +230,20 @@ var toCoordinates = function(hash) {
   return coords;
 };
 
+var transactionHashToUrl = function(hash) {
+  return 'https://blockchain.info/tx/' + hash;
+};
+
+var blockHashToUrl = function(hash) {
+  return 'https://blockchain.info/block-index/' + hash;
+};
+
 var transactionHashToA = function(hash) {
-  return '<a href="https://blockchain.info/tx/' + hash
+  return '<a href="' + transactionHashToUrl(hash)
        + '" target="_blank" title="' + hash + '">';
 };
 
 var blockHashToA = function(hash) {
-  return '<a href="https://blockchain.info/block-index/' + hash
+  return '<a href="' + blockHashToUrl(hash)
        + '" target="_blank" title="' + hash + '">';
 };

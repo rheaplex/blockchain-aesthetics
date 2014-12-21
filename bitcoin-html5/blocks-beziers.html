@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bitcoin Transactions</title>
+    <link rel="stylesheet" type="text/css" href="css/beziers.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="js/reconnecting-websocket.js"></script>
+    <script src="js/representations.js"></script>
+    <script src="js/beziers.js"></script>
+  </head>
+  <body>
+    <div id="transactions">
+      <div id="transactions-inner">
+      </div>
+    </div>
+    <script>
+      init('{"op":"blocks_sub"}');
+    </script>
+  </body>
+</html>
