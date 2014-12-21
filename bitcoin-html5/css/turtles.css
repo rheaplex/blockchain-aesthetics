@@ -1,0 +1,26 @@
+html {
+    overflow:hidden;
+}
+
+.cell {
+    margin: 12px;
+    display: inline-block;
+    outline: lightgray solid 1px;
+}
+
+#transactions-inner {
+    display:inline;
+    text-align: left;
+}
+
+#transactions {
+    text-align: left;
+    /* If this changes, check the row counts at the top of transaction-bitmaps.js */
+    width: 1020px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.cell a {
+    text-decoration: none !important;
+}
