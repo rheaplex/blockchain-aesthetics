@@ -184,7 +184,7 @@ var appendHash = function (hash) {
 
 
 var initConnection = function (spec) {
-  conn = new ReconnectingWebSocket('ws://ws.blockchain.info/inv');
+  conn = new ReconnectingWebSocket('wss://ws.blockchain.info/inv');
   conn.onopen = function () {
     // Should assert conn and err
     conn.send(spec);
