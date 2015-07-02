@@ -67,14 +67,14 @@ var bitValues = function(hash) {
   var values = Array();
   for (var i = 0; i < hash.length; i += 2) {
     var element = parseInt(hash.substring(i, i + 2), 16);
-    values.push(element & 1);
-    values.push(element & 2);
-    values.push(element & 4);
-    values.push(element & 8);
-    values.push(element & 16);
-    values.push(element & 32);
-    values.push(element & 64);
-    values.push(element & 128);
+    values.push(element & 128 ? 1 : 0);
+    values.push(element & 64 ? 1 : 0);
+    values.push(element & 32 ? 1 : 0);
+    values.push(element & 16 ? 1 : 0);
+    values.push(element & 8 ? 1 : 0);
+    values.push(element & 2 ? 1 : 0);
+    values.push(element & 4 ? 1 : 0);
+    values.push(element & 1 ? 1 : 0);
   }
   return values;
 };
