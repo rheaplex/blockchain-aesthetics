@@ -1,0 +1,28 @@
+<html>
+	<head>
+		<title>Bitcoin Transactions</title>
+		<style>
+			body { margin: 0; }
+			canvas { width: 100%; height: 100% }
+		</style>
+	</head>
+	<body>
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="js/reconnecting-websocket.js"></script>
+	  <script src="js/three.js"></script>
+      <script src="js/dat.gui.js"></script>
+      <script src="js/FileSaver.js"></script>
+      <script src="js/STLExporter.js"></script>
+      <script src="js/OBJExporter.js"></script>
+      <script src="js/OrbitControls.js"></script>
+      <script src="js/viewer.js"></script>
+	  <script src="js/Tween.js"></script>
+      <script src="js/hashToGeometry.js"></script>
+      <script>
+        init('{"op":"unconfirmed_sub"}',
+             'a1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d',
+            1000);
+        render();
+      </script>
+	</body>
+</html>
