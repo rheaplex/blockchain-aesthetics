@@ -80,10 +80,10 @@ var ReorderedVertexTorusGeometry = function ( radius, tube, radialSegments,
 
 	    for ( var j = 1; j <= radialSegments; j ++ ) {
 
-			var a = ( radialSegments + 1 ) * i + j - 1;
-			var b = ( radialSegments + 1 ) * ( i - 1 ) + j - 1;
-			var c = ( radialSegments + 1 ) * ( i - 1 ) + j;
-			var d = ( radialSegments + 1 ) * i + j;
+			var d = ( radialSegments + 1 ) * i + j - 1;
+			var c = ( radialSegments + 1 ) * ( i - 1 ) + j - 1;
+			var b = ( radialSegments + 1 ) * ( i - 1 ) + j;
+			var a = ( radialSegments + 1 ) * i + j;
 
 			var face = new THREE.Face3( a, b, d, [ normals[ a ].clone(), normals[ b ].clone(), normals[ d ].clone() ] );
 			this.faces.push( face );
@@ -338,7 +338,7 @@ var SPHERE_ROWS_INITIAL_SKIP = 1;
 var HEX_STRING_64_STRIDE = 8;
 
 var hexString64ToSphere = function (diameter, step, hashstring) {
-  var geometry = new THREE.SphereGeometry(diameter,
+  var geometry = new THREE.SphereGeometry(diameter / 2,
                                           SPHERE_COLUMNS_FACE_COUNT,
                                           SPHERE_ROWS_FACE_COUNT);
   geometryRowsDistortSphere(geometry, step, hashstring,
@@ -355,8 +355,8 @@ var CYLINDER_ROWS = 7;
 var CYLINDER_COLUMNS = 8;
 var CYLINDER_INITIAL_SKIP = 0;
 
-var hexString64ToCylinder = function (radius, height, step, hashstring) {
-  var geometry = new THREE.CylinderGeometry(radius, radius, height,
+var hexString64ToCylinder = function (diameter, height, step, hashstring) {
+  var geometry = new THREE.CylinderGeometry(diameter / 2, diameter / 2, height,
                                             CYLINDER_COLUMNS,
                                             CYLINDER_ROWS);
   geometryRowsDistortCylinder(geometry, step, hashstring, CYLINDER_COLUMNS,
@@ -371,9 +371,9 @@ var hexString64ToCylinder = function (radius, height, step, hashstring) {
 var TORUS_ROWS = 8;
 var TORUS_COLUMNS = 8;
 
-var hexString64ToTorus = function (radius, width, step, hashstring) {
-  var geometry = new ReorderedVertexTorusGeometry(radius, width, TORUS_COLUMNS,
-                                                  TORUS_ROWS);
+var hexString64ToTorus = function (diameter, width, step, hashstring) {
+  var geometry = new ReorderedVertexTorusGeometry(diameter / 2, width,
+                                                  TORUS_COLUMNS, TORUS_ROWS);
   geometryRowsDistortTorus(geometry, step, hashstring, TORUS_COLUMNS,
                            HEX_STRING_64_STRIDE);
   return geometry;
@@ -383,10 +383,10 @@ var hexString64ToTorus = function (radius, width, step, hashstring) {
 // hexStringToPlaneHeights
 ////////////////////////////////////////////////////////////////////////////////
 
-var hexString64ToPlaneHeights = function (width, height, hashstring) {
+var hexString64ToPlaneHeights = function (width, step, hashstring) {
   var STRIDE = 8;
   var CELL_SIZE = width / STRIDE;
-  var Y_SCALE = height / 15;
+  var Y_SCALE = step / 15;
 
   var geometry = new THREE.PlaneGeometry(width, width, STRIDE - 1, STRIDE - 1);
 
@@ -395,8 +395,8 @@ var hexString64ToPlaneHeights = function (width, height, hashstring) {
   });
 
   // Rotate so geometry lies flat
-  var matrix = new THREE.Matrix4().makeRotationX(Math.PI * 1.5);
-  geometry.applyMatrix(matrix);
+  //var matrix = new THREE.Matrix4().makeRotationX(Math.PI * 1.5);
+  //geometry.applyMatrix(matrix);
 
   return geometry;
 };
@@ -421,8 +421,17 @@ state.live = true;
 state.roll = true;
 state.palette = 'Windows 16';
 state.shape = 'sphere';
-state.range = 1.0;
+state.range = 1;
 state.background = 0x444444;
+state.currentModel = false;
+
+state.regenerateModel = function () {
+  if (this.currentModel) {
+  _scene_contents_wrapper.remove(this.currentModel.mesh);
+  this.currentModel.modelFromState(this);
+  _scene_contents_wrapper.add(this.currentModel.mesh);
+  }
+};
 
 var HashMesh = function (state) {
   this.hash = state.hash;
@@ -432,14 +441,17 @@ var HashMesh = function (state) {
 HashMesh.prototype.material = new THREE.MeshBasicMaterial({
   color: 0xffffff,
   shading: THREE.FlatShading,
-  vertexColors: THREE.VertexColors,
-  side: THREE.DoubleSide
+  vertexColors: THREE.VertexColors//,
+  //side: THREE.DoubleSide
 });
 
 HashMesh.prototype.modelFromState = function (state) {
+  this.material.side = THREE.FrontSide;
   switch (state.shape) {
     case "plane":
-      this.geometry = hexString64ToPlaneHeights(10, state.range, this.hash);
+      this.material.side = THREE.DoubleSide;
+      this.geometry = hexString64ToPlaneHeights(40, state.range * 10,
+                                                this.hash);
       hashStringColourVertices(this.geometry, this.hash,
                                colour_palettes[state.palette],
                                0, this.geometry.vertices.length,
@@ -447,7 +459,7 @@ HashMesh.prototype.modelFromState = function (state) {
                                new THREE.Color(0xffffff));
       break;
     case "cylinder":
-      this.geometry = hexString64ToCylinder(10, 80, state.range, state.hash);
+      this.geometry = hexString64ToCylinder(16, 35, state.range, state.hash);
       hashStringColourVertices(this.geometry, this.hash,
                                colour_palettes[state.palette],
                                0, this.geometry.vertices.length - 2,
@@ -455,7 +467,7 @@ HashMesh.prototype.modelFromState = function (state) {
                                new THREE.Color(0xffffff));
       break;
     case "sphere":
-      this.geometry = hexString64ToSphere(10, state.range, this.hash);
+      this.geometry = hexString64ToSphere(20, state.range, this.hash);
       hashStringColourVertices(this.geometry, this.hash,
                                colour_palettes[state.palette],
                                9, this.geometry.vertices.length - 9,
@@ -463,7 +475,8 @@ HashMesh.prototype.modelFromState = function (state) {
                                new THREE.Color(0xffffff));
       break;
     case "torus":
-      this.geometry = hexString64ToTorus(80, 10, state.range, this.hash);
+      this.geometry = hexString64ToTorus(40, 2.0, state.range * 0.75,
+                                         this.hash);
       hashStringColourVertices(this.geometry, this.hash,
                                colour_palettes[state.palette],
                                0, this.geometry.vertices.length,
@@ -512,16 +525,16 @@ HashMesh.prototype.tweenOut = function (duration) {
                .start();
 };
 
-state['Save STL'] = function (uiState){
+state['Save STL'] = function (){
   var exporter = new THREE.STLExporter();
-  var stl = exporter.parse(this.mesh);
+  var stl = exporter.parse(this.currentModel);
   var blob = new Blob([stl], {type: "application/sla;charset=utf-8"});
   saveAs(blob, this.hash + '.stl');
 };
 
 state['Save OBJ'] = function (){
   var exporter = new THREE.OBJExporter();
-  var obj = exporter.parse(scene);
+  var obj = exporter.parse(this.currentModel);
   var blob = new Blob([obj], {type: "text/plain;charset=utf-8"});
   saveAs(blob, state.hashstring + '.obj');
 };
@@ -549,8 +562,8 @@ var updateHash = function (hash) {
     mesh._hashmesh.tweenOut(_duration);
     //_scene_contents_wrapper.remove(mesh);
   });
-  var latest = new HashMesh(state);
-  latest.tweenIn(_duration);
+  state.currentModel = new HashMesh(state);
+  state.currentModel.tweenIn(_duration);
 };
 
 var startStopRolling = function () {
@@ -630,10 +643,5 @@ var init = function (spec, initial, duration) {
   $(_gui.domElement).hide();
   $('body').mousemove(_mousemove);
 };
-
-//TODO:
-// Fix torus face order (turn off double sided to see!
-// Make all models the same scale
-// Handle shape changes on the current model
 
 // @license-end
