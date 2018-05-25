@@ -3,15 +3,16 @@
   <head>
     <meta charset="UTF-8">
     <title>Bitcoin Transactions</title>
-    <link rel="stylesheet" type="text/css" href="css/faces.css">
+    <link rel="stylesheet" type="text/css" href="../shared-html5/css/faces.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="js/reconnecting-websocket.js"></script>
-    <script src="js/sjcl.js"></script>
-    <script src="js/face.js"></script>
-    <script src="js/ccv.js"></script>
-    <script src="js/StackBlur.js"></script>
-    <script src="js/representations.js"></script>
-    <script src="js/faces.js"></script>
+    <script src="../shared-html5/js/reconnecting-websocket.js"></script>
+    <script src="../shared-html5/js/sjcl.js"></script>
+    <script src="../shared-html5/js/face.js"></script>
+    <script src="../shared-html5/js/ccv.js"></script>
+    <script src="../shared-html5/js/StackBlur.js"></script>
+    <script src="../shared-html5/js/representations.js"></script>
+    <script src="../shared-html5/js/faces.js"></script>
+    <script src="js/init.js"></script>
   </head>
   <body>
     <div id="transactions">
@@ -19,7 +20,7 @@
       </div>
     </div>
     <script>
-      init('{"op":"blocks_sub"}');
+      initBlocks();
     </script>
   </body>
 </html>
