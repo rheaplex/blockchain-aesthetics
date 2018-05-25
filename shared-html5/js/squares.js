@@ -32,7 +32,7 @@ var conn;
 
 var appendHash = function (hash) {
   //console.log(hash);
-  var colours = paletteColours256(hash);
+  var colours = paletteColours(hash);
   var hash_html = '<div class="row">' + transactionHashToA(hash)
                 + toDivs(colours, 'cell') + '</a></div>';
   $('#transactions').prepend(hash_html);
