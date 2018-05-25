@@ -3,7 +3,7 @@
  * @licstart  The following is the entire license notice for the
  *  JavaScript code in this page.
  *
- * Copyright (C) 2014  Rhea Myers
+ * Copyright (C) 2014,2018 Rhea Myers
  *
  *
  * The JavaScript code in this page is free software: you can
@@ -49,6 +49,22 @@ var COLOUR_PALETTE_CGA = [
   "#AA0000", "#AA00AA", "#AA5500", "#AAAAAA",
   "#555555", "#5555FF", "#55FF55", "#55FFFF",
   "#55FFFF", "#FF55FF", "#FFFF55", "#FFFFFF"
+];
+
+var COLOUR_PALETTE_WOW = [
+  // Doge colour, then HTML 4.01 colours
+  "#d9bd62", "silver", "gray", "black",
+  "red", "maroon", "yellow", "olive",
+  "lime", "green", "aqua", "teal",
+  "blue", "navy", "fuchsia", "purple"
+];
+
+var COLOUR_PALETTE_CRYSTAL = [
+  // 0ish, 10, 20, 40, ..., 240, 250, 256ish Lightness for Eth 3C3C3D
+  "#050505", "#0A0A0A", "#141414", "#282828",
+  "#3C3C3C", "#505050", "#646464", "#787878",
+  "#8C8C8C", "#A0A0A0", "#B4B4B4", "#C8C8C8",
+  "#DCDCDC", "#F0F0F0", "#FAFAFA", "#FEFEFE",
 ];
 
 var GEOMETRIC_SHAPES = [
@@ -141,25 +157,32 @@ var greyColours = function(hash) {
   return colours;
 };
 
-var paletteColours256 = function(hash) {
+var hashToPaletteColours = function(hash, palette, scale) {
   var values = byteValues(hash);
   var colours = Array();
   values.forEach(function(value){
-    colours.push(COLOUR_PALETTE_256[value]);
+    colours.push(palette[Math.floor(value * scale)]);
   });
   return colours;
 };
 
-var paletteColoursCGA = function(hash) {
-  var values = nibbleValues(hash);
-  var colours = Array();
-  values.forEach(function(value){
-    colours.push(COLOUR_PALETTE_CGA[value]);
-  });
-  return colours;
+var eightBitPaletteColours = function(hash) {
+  return hashToPaletteColours(hash, COLOUR_PALETTE_256, 1);
 };
 
-var rgbColours = function(hash) {
+var cgaPaletteColours = function(hash) {
+  return hashToPaletteColours(hash, COLOUR_PALETTE_CGA, 1 / (256 / 16));
+};
+
+var wowPaletteColours = function(hash) {
+  return hashToPaletteColours(hash, COLOUR_PALETTE_WOW, 1 / (256 / 16));
+};
+
+var crystalPaletteColours = function(hash) {
+  return hashToPaletteColours(hash, COLOUR_PALETTE_CRYSTAL, 1 / (256 / 16));
+};
+
+var rgbPaletteColours = function(hash) {
   var values = wordValues(hash);
   var colours = Array();
   values.forEach(function(value){
@@ -174,7 +197,7 @@ var rgbColours = function(hash) {
   return colours;
 };
 
-var cmykColours = function(hash) {
+var cmykPaletteColours = function(hash) {
   var colours = Array();
   for (var i = 0; i < hash.length; i += 8) {
     // In range 0..1

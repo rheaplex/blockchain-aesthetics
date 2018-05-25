@@ -30,7 +30,7 @@ var TRUNCATE_ROWS_TO = 600;
 
 var appendHash = function (hash) {
   //console.log(hash);
-  var colours = paletteColours256(hash);
+  var colours = paletteColours(hash);
   var hash_html = '<div class="row">' +transactionHashToA(hash)
                 + toBullets(colours) + '</a></div>';
   //var hash_html = $('<p>' + hash + '</p>');

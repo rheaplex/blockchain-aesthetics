@@ -25,6 +25,8 @@
  *
  */
 
+const paletteColours = eightBitPaletteColours;
+
 var initConnection = function (spec) {
   var err = false;
   conn = new ReconnectingWebSocket('wss://ws.blockchain.info/inv');

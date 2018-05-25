@@ -25,6 +25,8 @@
  *
  */
 
+const paletteColours = wowPaletteColours
+
 Pusher.host = 'slanger1.chain.so'
 Pusher.ws_port = 443
 Pusher.wss_port = 443

@@ -29,6 +29,8 @@ const INFURA_WS_URL = 'wss://mainnet.infura.io/ws'
 
 var web3 = new Web3(Web3.givenProvider || INFURA_WS_URL)
 
+const paletteColours = crystalPaletteColours
+
 const initBlocks = () => {
     web3.eth.subscribe(
     'newBlockHeaders',
