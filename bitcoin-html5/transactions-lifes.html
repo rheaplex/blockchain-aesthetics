@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <title>Bitcoin Transactions</title>
-    <link rel="stylesheet" type="text/css" href="css/lifes.css">
+    <link rel="stylesheet" type="text/css" href="../shared-html5/css/lifes.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="js/reconnecting-websocket.js"></script>
-    <script src="js/life.js"></script>
-    <script src="js/representations.js"></script>
-    <script src="js/lifes.js"></script>
+    <script src="../shared-html5/js/reconnecting-websocket.js"></script>
+    <script src="../shared-html5/js/life.js"></script>
+    <script src="../shared-html5/js/representations.js"></script>
+    <script src="../shared-html5/js/lifes.js"></script>
+    <script src="js/init.js"></script>
   </head>
   <body>
     <div id="transactions">
@@ -16,7 +17,7 @@
       </div>
     </div>
     <script>
-      init('{"op":"unconfirmed_sub"}');
+      initTransactions();
     </script>
   </body>
 </html>
