@@ -3,7 +3,7 @@
  * @licstart  The following is the entire license notice for the
  *  JavaScript code in this page.
  *
- * Copyright (C) 2014  Rhea Myers
+ * Copyright (C) 2014, 2018  Rhea Myers
  *
  *
  * The JavaScript code in this page is free software: you can
@@ -25,9 +25,6 @@
  *
  */
 
-var TRUNCATE_ROWS_AT = 1200;
-var TRUNCATE_ROWS_TO = 600;
-
 var conn;
 
 var appendHash = function (hash) {
@@ -36,12 +33,18 @@ var appendHash = function (hash) {
   var hash_html = '<div class="row">' + transactionHashToA(hash)
                 + toDivs(colours, 'cell') + '</a></div>';
   $('#transactions').prepend(hash_html);
-  $('.row:first').hide();
-  $('.row:first').slideDown();
-  // Keep rows to 1000 or whatever
-  if ($('.row').size() >= TRUNCATE_ROWS_AT) {
-    var remove = $(".row:gt(" + TRUNCATE_ROWS_TO + ")");
-    remove.slideUp('fast',function() { remove.remove(); });
+  var row = $('.row:first');
+  row.hide();
+  //row.slideDown();
+  row.fadeIn();
+  // The next few lines being dynamic is slower but more robust
+  // Must have an element of this class to query it
+  var cellHeight = $('.cell').css('height')
+  // Use better method of regularizing units
+  var numCells = Math.ceil(parseInt(window.innerHeight) / parseInt(cellHeight));
+  if ($('.row').size() >= numCells) {
+      var remove = $(".row:gt(" + numCells + ")");
+      remove.slideUp('fast',function() { remove.remove(); });
   }
 };
 
