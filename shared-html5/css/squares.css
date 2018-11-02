@@ -2,6 +2,10 @@ html {
     overflow:hidden;
 }
 
+body {
+    margin: 0;
+}
+
 #transactions {
     /* This must be 32 * .cell width */
     width: 960px;
