@@ -7,13 +7,26 @@ body {
 }
 
 #transactions {
+    text-align: center;
     /* This must be 32 * .cell width */
     width: 960px;
     margin: 0 auto;
 }
 
+.row {
+    font-size: 40px;
+    letter-spacing: -8px;
+    line-heigh: 30px;
+    height: 30px;
+}
+
 .cell {
+    display: inline-block;
     height: 30px;
     width: 30px;
     float : left;
+}
+
+#transactions a {
+    text-decoration: none !important;
 }

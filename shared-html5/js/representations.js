@@ -242,6 +242,34 @@ var toBullets = function(colours) {
   return row;
 };
 
+var toSquares = function(colours) {
+  var row = '';
+  colours.forEach(function(colour){
+    row += "<span style=\"color:" + colour + "\">&#x25A0;</span>"
+
+  });
+  return row;
+};
+
+var toRow = function(colours) {
+ var row = '<tr class=".row">';
+  colours.forEach(function(colour){
+    row += '<td class="cell" style="color:' + colour + '">&nbsp;</td>';
+
+  });
+  return row + '</tr>';
+}
+
+var toSpans = function(colours, classID) {
+ var row = '<tr class=".row">';
+  colours.forEach(function(colour){
+    row += '<span class="' + classID + '" style="background-color:' + colour +
+      '">&nbsp;</span>';
+  });
+  return row;
+}
+
+
 // Return normalized 4-bit co-ordinate pairs
 
 var toCoordinates = function(hash) {
