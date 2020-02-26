@@ -25,32 +25,31 @@
  *
  */
 
-const paletteColours = wowPaletteColours
+const paletteColours = wowPaletteColours;
 
-Pusher.host = 'slanger1.chain.so'
-Pusher.ws_port = 443
-Pusher.wss_port = 443
+Pusher.host = 'slanger1.sochain.com';
+Pusher.ws_port = 443;
+Pusher.wss_port = 443;
 
 const _initDogecoinConnection = (messageType, extract) => {
   const pusher = new Pusher('e9f5cc20074501ca7395',
                             { encrypted: true,
                               disabledTransports: ['sockjs'],
-                              disableStats: true })
+                              disableStats: true });
 
-  const ticker = pusher.subscribe('blockchain_update_doge')
+  const ticker = pusher.subscribe('blockchain_update_doge');
   
   ticker.bind(messageType + '_update', data => {
     if (data.type == messageType) {
-      appendHash(extract(data))
+      appendHash(extract(data));
     }
-  })
-
-}
+  });
+};
 
 const initBlocks = () => {
-  _initDogecoinConnection('block', data => data.value.blockhash)
-}
+  _initDogecoinConnection('block', data => data.value.blockhash);
+};
 
 const initTransactions = function () {
-  _initDogecoinConnection('tx', data => data.value.txid)
-}
+  _initDogecoinConnection('tx', data => data.value.txid);
+};
