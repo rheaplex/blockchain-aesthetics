@@ -28,7 +28,7 @@
 var DIV_1_255 = 1.0 / 255;
 var DIV_255_8 = 255.0 / 8;
 var DIV_255_4 = 255.0 / 4;
-var DIV_1_16 = 1.0 / 16
+var DIV_1_16 = 1.0 / 16;
 
 // 8-8-4 256 colour RGB palette
 var COLOUR_PALETTE_256 = Array();
@@ -61,10 +61,15 @@ var COLOUR_PALETTE_WOW = [
 
 var COLOUR_PALETTE_CRYSTAL = [
   // 0ish, 10, 20, 40, ..., 240, 250, 256ish Lightness for Eth 3C3C3D
-  "#050505", "#0A0A0A", "#141414", "#282828",
+  /*"#050505", "#0A0A0A", "#141414", "#282828",
   "#3C3C3C", "#505050", "#646464", "#787878",
   "#8C8C8C", "#A0A0A0", "#B4B4B4", "#C8C8C8",
   "#DCDCDC", "#F0F0F0", "#FAFAFA", "#FEFEFE",
+];*/
+  '#101010', '#1F1F1F', '#2E2E2E', '#3D3D3D',
+  '#4C4C4C', '#5B5B5B', '#6A6A6A', '#797979',
+  '#888888', '#979797', '#A6A6A6', '#B5B5B5',
+  '#C4C4C4', '#D3D3D3', '#E2E2E2', '#F1F1F1'
 ];
 
 var GEOMETRIC_SHAPES = [

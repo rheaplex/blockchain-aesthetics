@@ -25,32 +25,68 @@
  *
  */
 
-const INFURA_WS_URL = 'wss://mainnet.infura.io/ws'
+const paletteColours = crystalPaletteColours;
 
-var web3 = new Web3(Web3.givenProvider || INFURA_WS_URL)
+let weHaveEthereumAccess = false;
 
-const paletteColours = crystalPaletteColours
+const strip0x = src => src.startsWith('0x') ? src.substring(2) : src;
+
+const initEthereum = () => {
+  // Modern dapp browsers...
+  if (window.ethereum) {
+    window.web3 = new Web3(ethereum);
+    weHaveEthereumAccess = true;
+  }
+  // Legacy dapp browsers...
+  else if (window.web3) {
+    window.web3 = new Web3(web3.currentProvider);
+    weHaveEthereumAccess = true;
+  }
+  // Non-dapp browsers...
+  else {
+    console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+    document.write("No Ethereum access detected. Try installing an Ethereum plugin, using an Ethereum-enabled browser, or (if you have) updating this project's source code.");
+  }
+};
 
 const initBlocks = () => {
-    web3.eth.subscribe(
-    'newBlockHeaders',
-    (error, result) => {
+  window.addEventListener('load', () => {
+    initEthereum();
+    web3.eth.subscribe('newBlockHeaders', (error, result) => {
       if (! error) {
-        // Remove the leading 0x
-        appendHash(result.hash.substring(2))
+        appendHash(strip0x(result.hash));
+      } else {
+        console.log(error);
       }
-    }
-  )
-}
+    });
+  });
+};
+
+// We can't access raw broadcast transactions, so unpack each block as it
+// comes in.
+
+// Current block time is ~ 15 seconds, so delay txes a little.
+
+const ethTxQueue = [];
+
+const appendTx = () => {
+  if(ethTxQueue.length > 0) {
+    appendHash(ethTxQueue.pop());
+  }
+  // Either aim for 15 seconds, or check again in one second
+  const delay = 15000 / ethTxQueue.length ? ethTxQueue.length : 15;
+  setTimeout(appendTx, delay);
+};
 
 const initTransactions = () => {
-  web3.eth.subscribe(
-    'pendingTransactions',
-    (error, result) => {
+  window.addEventListener('load', () => {
+    initEthereum();
+    web3.eth.subscribe('newBlockHeaders', async (error, result) => {
       if (! error) {
-        // Remove the leading 0x
-        appendHash(result.substring(2))
+        const block = await web3.eth.getBlock(result.hash);
+        block.transactions.forEach(tx => ethTxQueue.push(strip0x(tx)));
       }
-    }
-  )
-}
+    });
+    appendTx();
+  });
+};
