@@ -70,11 +70,16 @@ const initBlocks = () => {
 const ethTxQueue = [];
 
 const appendTx = () => {
+  // Check once per second
+  let delay = 1000;
   if(ethTxQueue.length > 0) {
     appendHash(ethTxQueue.pop());
+    // Pace the insertions.
+    delay = Math.min(
+      15000 / ethTxQueue.length ? ethTxQueue.length : 1,
+      50
+    );
   }
-  // Either aim for 15 seconds, or check again in one second
-  const delay = 15000 / ethTxQueue.length ? ethTxQueue.length : 15;
   setTimeout(appendTx, delay);
 };
 
